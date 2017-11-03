@@ -18,19 +18,15 @@ source:
     - patches/0001-Do-not-build-tests-binaries-on-VS-project.patch  # [win]
 
 build:
-  skip: True  # [win and not py35]
   number: {{ build }}
   features:
-    - vc14  # [win and py>=35]
+    - vc14  # [win]
 
 requirements:
   build:
-    - toolchain  # [unix]
-    - python  # [win]
-    - vc 14   # [win and py>=35]
-
-  run:
-    - vc 14   # [win and py>=35]
+    - {{ compiler('c') }}
+    - vc 14                 # [win]
+    - vs2015_runtime        # [win]
 
 test:
   requires:
