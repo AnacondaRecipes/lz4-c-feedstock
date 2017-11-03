@@ -21,6 +21,10 @@ build:
   number: {{ build }}
   features:
     - vc14  # [win]
+  run_exports:
+    # Symbols get removed at minor revs.
+    # https://abi-laboratory.pro/tracker/timeline/lz4/
+    - {{ pin_subpackage('lz4-c', max_pin='x.x') }}
 
 requirements:
   build:
