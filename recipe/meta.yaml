@@ -3,7 +3,7 @@
 {% set name = "lz4" %}
 {% set version = "1.8.0" %}
 {% set sha256sum = "2ca482ea7a9bb103603108b5a7510b7592b90158c151ff50a28f1ca8389fccf6" %}
-{% set build = 0 %}
+{% set build = 1 %}
 
 package:
   name: {{ pkg_name }}
@@ -19,8 +19,7 @@ source:
 
 build:
   number: {{ build }}
-  features:
-    - vc14  # [win]
+  skip: True   # [win and vc<14]
   run_exports:
     # Symbols get removed at minor revs.
     # https://abi-laboratory.pro/tracker/timeline/lz4/
@@ -29,8 +28,6 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-    - vc 14                 # [win]
-    - vs2015_runtime        # [win]
 
 test:
   requires:
