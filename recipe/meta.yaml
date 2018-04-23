@@ -36,6 +36,7 @@ requirements:
     - cmake       # [win and vc<14]
     - jom         # [win and vc<14]
     - patch       # [unix]
+    - make        # [unix]
 
 test:
   requires:
