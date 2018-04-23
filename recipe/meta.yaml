@@ -22,6 +22,7 @@ source:
     - 0005-CMake-Add-datagen-executable.patch
     - 0006-CMake-Set-SHARED-STATIC-IMPORT_LIBRARY_PREFIXes-for-.patch
     - 0007-Makefile-LDFLAGS-must-appear-after-inputs-when-linking.patch
+    - 0008-CMake-link-the-CLI-programs-statically-to-the-lib-co.patch
 
 build:
   number: {{ build }}
