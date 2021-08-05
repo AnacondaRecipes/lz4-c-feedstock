@@ -13,9 +13,11 @@ source:
   patches:
     # https://github.com/lz4/lz4/pull/962
     - patches/0002-include-local-header-directory.patch  # [win]
+    # See: https://github.com/lz4/lz4/pull/972
+    - patches/CVE-2021-3520.patch
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   build:
@@ -75,8 +77,9 @@ outputs:
 
 
 about:
-  home: https://www.lz4.org
+  home: https://lz4.github.io/lz4/
   license: BSD-2-Clause
+  license_family: BSD
   license_file: lib/LICENSE
   summary: Extremely Fast Compression algorithm
   description: |
@@ -86,6 +89,7 @@ about:
     derivative, called LZ4_HC, is available, trading customizable CPU time for
     compression ratio. LZ4 library is provided as open source software using a
     BSD license.
+  dev_url: https://github.com/lz4/lz4
 
 extra:
   recipe-maintainers:
