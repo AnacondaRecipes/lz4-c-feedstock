@@ -14,6 +14,7 @@ source:
     # https://github.com/lz4/lz4/pull/962
     - patches/0002-include-local-header-directory.patch  # [win]
 
+
 build:
   number: 0
 
@@ -77,6 +78,7 @@ outputs:
 about:
   home: https://lz4.github.io/lz4/
   license: BSD-2-Clause
+  license_family: BSD
   license_file: lib/LICENSE
   license_family: BSD
   summary: Extremely Fast Compression algorithm
@@ -89,6 +91,7 @@ about:
     BSD license.
   dev_url: https://github.com/lz4/lz4
   doc_url: https://github.com/lz4/lz4/blob/dev/doc/lz4_Block_format.md
+
 
 extra:
   recipe-maintainers:
