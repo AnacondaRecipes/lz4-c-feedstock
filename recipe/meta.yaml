@@ -71,7 +71,6 @@ outputs:
         - test -f ${PREFIX}/lib/liblz4.a      # [unix]
         - if not exist %LIBRARY_LIB%\\liblz4_static.lib exit 1  # [win]
 
-
 about:
   home: https://lz4.github.io/lz4/
   license: BSD-2-Clause
@@ -87,9 +86,8 @@ about:
     compression ratio. LZ4 library is provided as open source software using a
     BSD license.
   dev_url: https://github.com/lz4/lz4
-  doc_url: https://github.com/lz4/lz4/blob/dev/doc/lz4_Block_format.md
-
-
+  doc_url: https://github.com/lz4/lz4/blob/dev/README.md
+  
 extra:
   recipe-maintainers:
     - mingwandroid
