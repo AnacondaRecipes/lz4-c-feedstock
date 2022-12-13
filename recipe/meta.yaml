@@ -19,8 +19,6 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}  # [not win]
     - make  # [not win]
-    - patch  # [unix]
-    - m2-patch  # [win]
     - m2-gcc-libs  # [win]
   host:
   run:
@@ -75,7 +73,6 @@ about:
   license: BSD-2-Clause
   license_family: BSD
   license_file: lib/LICENSE
-  license_family: BSD
   summary: Extremely Fast Compression algorithm
   description: |
     LZ4 is lossless compression algorithm, providing compression speed at 400
