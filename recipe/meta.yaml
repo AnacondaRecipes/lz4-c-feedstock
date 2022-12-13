@@ -1,6 +1,6 @@
 {% set pkg_name = "lz4-c" %}
 {% set name = "lz4" %}
-{% set version = "1.9.3" %}
+{% set version = "1.9.4" %}
 
 package:
   name: {{ pkg_name }}
@@ -9,23 +9,16 @@ package:
 source:
   fn: {{ name }}-{{ version }}.tar.gz
   url: https://github.com/{{ name }}/{{ name }}/archive/v{{ version }}.tar.gz
-  sha256: 030644df4611007ff7dc962d981f390361e6c97a34e5cbc393ddfbe019ffe2c1
-  patches:
-    # https://github.com/lz4/lz4/pull/962
-    - patches/0002-include-local-header-directory.patch  # [win]
-    # See: https://github.com/lz4/lz4/pull/972
-    - patches/CVE-2021-3520.patch
+  sha256: 0b0e3aa07c8c063ddf40b082bdf7e37a1562bda40a0ff5272957f3e987e0e54b
 
 build:
-  number: 1
+  number: 0
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}  # [not win]
     - make  # [not win]
-    - patch  # [unix]
-    - m2-patch  # [win]
     - m2-gcc-libs  # [win]
   host:
   run:
@@ -75,7 +68,6 @@ outputs:
         - test -f ${PREFIX}/lib/liblz4.a      # [unix]
         - if not exist %LIBRARY_LIB%\\liblz4_static.lib exit 1  # [win]
 
-
 about:
   home: https://lz4.github.io/lz4/
   license: BSD-2-Clause
@@ -90,6 +82,7 @@ about:
     compression ratio. LZ4 library is provided as open source software using a
     BSD license.
   dev_url: https://github.com/lz4/lz4
+  doc_url: https://github.com/lz4/lz4/blob/dev/README.md
 
 extra:
   recipe-maintainers:
