@@ -19,7 +19,8 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}  # [not win]
     - make  # [not win]
-    - m2-gcc-libs  # [win]
+    - cmake  # [win]
+    - ninja  # [win]
   host:
   run:
 
@@ -51,22 +52,20 @@ outputs:
         - test -f ${PREFIX}/lib/liblz4.dylib  # [osx]
         - test -f ${PREFIX}/lib/liblz4.so     # [linux]
 
-        - if not exist %LIBRARY_BIN%\\liblz4.dll exit 1         # [win]
-        - if not exist %LIBRARY_LIB%\\liblz4.lib exit 1         # [win]
-        - if exist %LIBRARY_LIB%\\liblz4_static.lib exit 1  # [win]
+        - if not exist %LIBRARY_BIN%\\lz4.dll exit 1         # [win]
+        - if not exist %LIBRARY_LIB%\\lz4.lib exit 1         # [win]
+        - if exist %LIBRARY_LIB%\\lz4_static.lib exit 1  # [win]
 
         - test -f ${PREFIX}/lib/pkgconfig/liblz4.pc  # [unix]
         - pkg-config --cflags --libs liblz4          # [unix]
 
   - name: lz4-c-static
-    build:
-      activate_in_script: true
     script: build_static.sh  # [unix]
     script: bld_static.bat  # [win]
     test:
       commands:
         - test -f ${PREFIX}/lib/liblz4.a      # [unix]
-        - if not exist %LIBRARY_LIB%\\liblz4_static.lib exit 1  # [win]
+        - if not exist %LIBRARY_LIB%\\lz4_static.lib exit 1  # [win]
 
 about:
   home: https://lz4.github.io/lz4/
