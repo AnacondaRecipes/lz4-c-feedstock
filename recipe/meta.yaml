@@ -14,22 +14,19 @@ source:
 build:
   number: 1
 
-requirements:
-  build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}  # [not win]
-    - make  # [not win]
-    - cmake  # [win]
-    - ninja  # [win]
-  host:
-  run:
-
 outputs:
   - name: lz4-c
     build:
       # https://abi-laboratory.pro/index.php?view=timeline&l=lz4
       run_exports:
         - {{ pin_subpackage(pkg_name, max_pin='x.x') }}
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}  # [not win]
+        - make  # [not win]
+        - cmake  # [win]
+        - ninja  # [win]
     test:
       requires:
         - pkg-config  # [unix]
