@@ -19,9 +19,8 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}  # [not win]
     - make  # [not win]
-    ## Causes lz4-c to depend on itself?
-    # - cmake  # [win]
-    # - ninja  # [win]
+    - cmake-no-system  # [win]
+    - ninja-base  # [win]
   host:
   run:
 
