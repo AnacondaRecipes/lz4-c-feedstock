@@ -52,12 +52,18 @@ outputs:
         - test -f ${PREFIX}/lib/liblz4.dylib  # [osx]
         - test -f ${PREFIX}/lib/liblz4.so     # [linux]
 
-        - if not exist %LIBRARY_BIN%\\lz4.dll exit 1         # [win]
-        - if not exist %LIBRARY_LIB%\\lz4.lib exit 1         # [win]
-        - if exist %LIBRARY_LIB%\\lz4_static.lib exit 1  # [win]
+        - if not exist %LIBRARY_BIN%\\liblz4.dll exit 1         # [win]
+        - if not exist %LIBRARY_LIB%\\liblz4.lib exit 1         # [win]
+        - if exist %LIBRARY_LIB%\\liblz4_static.lib exit 1  # [win]
+        - if exist %LIBRARY_BIN%\\lz4.dll exit 1         # [win]
+        - if exist %LIBRARY_LIB%\\lz4.lib exit 1         # [win]
 
         - test -f ${PREFIX}/lib/pkgconfig/liblz4.pc  # [unix]
         - pkg-config --cflags --libs liblz4          # [unix]
+        - if not exist %LIBRARY_LIB%\\pkgconfig\\liblz4.pc exit 1  # [win]
+        - if not exist %LIBRARY_LIB%\\cmake\\lz4\\lz4Targets.cmake exit 1  # [win]
+        - findstr /C:"liblz4.lib" "%LIBRARY_LIB%\\cmake\\lz4\\lz4Targets-release.cmake"  # [win]
+        - findstr /C:"liblz4.dll" "%LIBRARY_LIB%\\cmake\\lz4\\lz4Targets-release.cmake"  # [win]
 
   - name: lz4-c-static
     script: build_static.sh  # [unix]
@@ -65,7 +71,7 @@ outputs:
     test:
       commands:
         - test -f ${PREFIX}/lib/liblz4.a      # [unix]
-        - if not exist %LIBRARY_LIB%\\lz4_static.lib exit 1  # [win]
+        - if not exist %LIBRARY_LIB%\\liblz4_static.lib exit 1  # [win]
 
 about:
   home: https://lz4.github.io/lz4/
