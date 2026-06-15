@@ -31,6 +31,20 @@ outputs:
       # https://abi-laboratory.pro/index.php?view=timeline&l=lz4
       run_exports:
         - {{ pin_subpackage(pkg_name, max_pin='x.x') }}
+    # Required when package.name != output name: conda-build only auto-fills
+    # files for the output whose name matches the top-level package.
+    files:
+      include:
+        - bin/**            # [unix]
+        - include/**        # [unix]
+        - lib/**            # [unix]
+        - Library/bin/**    # [win]
+        - Library/include/**  # [win]
+        - Library/lib/**    # [win]
+        - Library/share/**  # [win]
+      exclude:
+        - lib/liblz4.a                    # [unix]
+        - Library/lib/liblz4_static.lib   # [win]
     test:
       requires:
         - pkg-config  # [unix]
