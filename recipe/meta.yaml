@@ -33,6 +33,7 @@ outputs:
         - {{ pin_subpackage(pkg_name, max_pin='x.x') }}
     requirements:
       build:
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}  # [not win]
         - make  # [not win]
