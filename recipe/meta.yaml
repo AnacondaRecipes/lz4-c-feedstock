@@ -3,7 +3,7 @@
 {% set version = "1.9.4" %}
 
 package:
-  name: {{ pkg_name }}
+  name: {{ pkg_name }}-split
   version: {{ version }}
 
 source:
@@ -11,7 +11,7 @@ source:
   sha256: 0b0e3aa07c8c063ddf40b082bdf7e37a1562bda40a0ff5272957f3e987e0e54b
 
 build:
-  number: 2
+  number: 3
 
 requirements:
   build:
@@ -30,6 +30,32 @@ outputs:
       # https://abi-laboratory.pro/index.php?view=timeline&l=lz4
       run_exports:
         - {{ pin_subpackage(pkg_name, max_pin='x.x') }}
+    requirements:
+      build:
+        - {{ stdlib('c') }}
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}  # [not win]
+        - make  # [not win]
+        - cmake-no-system  # [win]
+        - ninja-base  # [win]
+    # Multi-output recipes disable conda-build's default "bundle everything in
+    # PREFIX" behavior; each output needs explicit files: and/or a per-output
+    # script.  Here, recipe-level bld.bat/build.sh install shared artifacts
+    # into PREFIX once before outputs run.  The lz4-c output has no script, so
+    # these globs are what populate the package.
+    files:
+      - bin/**                          # [unix]
+      - include/**                      # [unix]
+      - lib/liblz4*{{ SHLIB_EXT }}*     # [unix]
+      - lib/pkgconfig/**                # [unix]
+      - share/man/man1/**               # [unix]
+      - Library/bin/liblz4.dll          # [win]
+      - Library/bin/lz4.exe             # [win]
+      - Library/include/**              # [win]
+      - Library/lib/liblz4.lib          # [win]
+      - Library/lib/pkgconfig/**        # [win]
+      - Library/lib/cmake/lz4/**        # [win]
+      - Library/share/man/**            # [win]
     test:
       requires:
         - pkg-config  # [unix]

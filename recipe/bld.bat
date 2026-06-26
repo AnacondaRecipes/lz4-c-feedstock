@@ -13,8 +13,6 @@ cmake -G Ninja ^
     -DLZ4_BUILD_LEGACY_LZ4C=OFF ^
     -DBUILD_SHARED_LIBS=ON ^
     -DBUILD_STATIC_LIBS=OFF ^
-    -DCMAKE_SHARED_LIBRARY_PREFIX=lib ^
-    -DCMAKE_IMPORT_LIBRARY_PREFIX=lib ^
     %SRC_DIR%\build\cmake
 if errorlevel 1 exit 1
 
@@ -60,6 +58,23 @@ if not "%CONDA_BUILD_CROSS_COMPILATION%"=="1" (
 :: Install shared library
 cmake --install . --config Release
 if errorlevel 1 exit 1
+
+:: Upstream CMake sets OUTPUT_NAME to "lz4" (see build/cmake/CMakeLists.txt).
+:: Conda defaults expect liblz4.dll / liblz4.lib for ABI compatibility.
+if exist "%LIBRARY_BIN%\lz4.dll" (
+    move /Y "%LIBRARY_BIN%\lz4.dll" "%LIBRARY_BIN%\liblz4.dll"
+    if errorlevel 1 exit 1
+)
+if exist "%LIBRARY_LIB%\lz4.lib" (
+    move /Y "%LIBRARY_LIB%\lz4.lib" "%LIBRARY_LIB%\liblz4.lib"
+    if errorlevel 1 exit 1
+)
+set "_lz4_cmake_targets=%LIBRARY_LIB%\cmake\lz4\lz4Targets-release.cmake"
+if exist "%_lz4_cmake_targets%" (
+    powershell -NoProfile -Command ^
+        "(Get-Content -LiteralPath '%_lz4_cmake_targets%') -replace 'lz4\.lib\"', 'liblz4.lib\"' -replace 'lz4\.dll\"', 'liblz4.dll\"' | Set-Content -LiteralPath '%_lz4_cmake_targets%' -Encoding utf8"
+    if errorlevel 1 exit 1
+)
 
 :: Also build static library (for lz4-c-static output to copy later)
 mkdir %SRC_DIR%\build_static
