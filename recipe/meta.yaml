@@ -9,9 +9,11 @@ package:
 source:
   url: https://github.com/{{ name }}/{{ name }}/archive/v{{ version }}.tar.gz
   sha256: 0b0e3aa07c8c063ddf40b082bdf7e37a1562bda40a0ff5272957f3e987e0e54b
+  patches:
+    - patches/windows-output-name.patch  # [win]
 
 build:
-  number: 4
+  number: 5
 
 requirements:
   build:
@@ -83,6 +85,8 @@ outputs:
         - if exist %LIBRARY_LIB%\\liblz4_static.lib exit 1  # [win]
         - if exist %LIBRARY_BIN%\\lz4.dll exit 1         # [win]
         - if exist %LIBRARY_LIB%\\lz4.lib exit 1         # [win]
+        - powershell -NoProfile -Command "$t=[Text.Encoding]::ASCII.GetString([IO.File]::ReadAllBytes($env:LIBRARY_LIB + '\liblz4.lib')); if ($t -notlike '*liblz4.dll*') { exit 1 }; if ($t.Replace('liblz4.dll','') -like '*lz4.dll*') { exit 1 }"  # [win]
+        - powershell -NoProfile -Command "$t=[Text.Encoding]::ASCII.GetString([IO.File]::ReadAllBytes($env:LIBRARY_BIN + '\liblz4.dll')); if ($t -notlike '*liblz4.dll*') { exit 1 }; if ($t.Replace('liblz4.dll','') -like '*lz4.dll*') { exit 1 }"  # [win]
 
         - test -f ${PREFIX}/lib/pkgconfig/liblz4.pc  # [unix]
         - pkg-config --cflags --libs liblz4          # [unix]
