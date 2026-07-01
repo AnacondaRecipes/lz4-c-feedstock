@@ -59,20 +59,17 @@ if not "%CONDA_BUILD_CROSS_COMPILATION%"=="1" (
 cmake --install . --config Release
 if errorlevel 1 exit 1
 
-:: Upstream CMake sets OUTPUT_NAME to "lz4" (see build/cmake/CMakeLists.txt).
-:: Conda defaults expect liblz4.dll / liblz4.lib for ABI compatibility.
-if exist "%LIBRARY_BIN%\lz4.dll" (
-    move /Y "%LIBRARY_BIN%\lz4.dll" "%LIBRARY_BIN%\liblz4.dll"
-    if errorlevel 1 exit 1
-)
-if exist "%LIBRARY_LIB%\lz4.lib" (
-    move /Y "%LIBRARY_LIB%\lz4.lib" "%LIBRARY_LIB%\liblz4.lib"
-    if errorlevel 1 exit 1
-)
-set "_lz4_cmake_targets=%LIBRARY_LIB%\cmake\lz4\lz4Targets-release.cmake"
-if exist "%_lz4_cmake_targets%" (
+:: windows-output-name.patch builds liblz4.dll/liblz4.lib directly on MSVC.
+if not exist "%LIBRARY_BIN%\liblz4.dll" exit 1
+if not exist "%LIBRARY_LIB%\liblz4.lib" exit 1
+if exist "%LIBRARY_BIN%\lz4.dll" exit 1
+if exist "%LIBRARY_LIB%\lz4.lib" exit 1
+
+:: pkg-config template still uses -llz4; Windows links against liblz4.lib.
+set "_lz4_pc=%LIBRARY_LIB%\pkgconfig\liblz4.pc"
+if exist "%_lz4_pc%" (
     powershell -NoProfile -Command ^
-        "(Get-Content -LiteralPath '%_lz4_cmake_targets%') -replace 'lz4\.lib\"', 'liblz4.lib\"' -replace 'lz4\.dll\"', 'liblz4.dll\"' | Set-Content -LiteralPath '%_lz4_cmake_targets%' -Encoding utf8"
+        "(Get-Content -LiteralPath '%_lz4_pc%') -replace '-llz4', '-lliblz4' | Set-Content -LiteralPath '%_lz4_pc%' -Encoding utf8"
     if errorlevel 1 exit 1
 )
 
