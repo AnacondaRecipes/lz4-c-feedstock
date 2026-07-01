@@ -75,6 +75,12 @@ if exist "%_lz4_cmake_targets%" (
         "(Get-Content -LiteralPath '%_lz4_cmake_targets%') -replace 'lz4\.lib\"', 'liblz4.lib\"' -replace 'lz4\.dll\"', 'liblz4.dll\"' | Set-Content -LiteralPath '%_lz4_cmake_targets%' -Encoding utf8"
     if errorlevel 1 exit 1
 )
+set "_lz4_pc=%LIBRARY_LIB%\pkgconfig\liblz4.pc"
+if exist "%_lz4_pc%" (
+    powershell -NoProfile -Command ^
+        "(Get-Content -LiteralPath '%_lz4_pc%') -replace '-llz4', '-lliblz4' | Set-Content -LiteralPath '%_lz4_pc%' -Encoding utf8"
+    if errorlevel 1 exit 1
+)
 
 :: Also build static library (for lz4-c-static output to copy later)
 mkdir %SRC_DIR%\build_static

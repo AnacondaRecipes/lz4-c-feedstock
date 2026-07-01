@@ -11,7 +11,7 @@ source:
   sha256: 0b0e3aa07c8c063ddf40b082bdf7e37a1562bda40a0ff5272957f3e987e0e54b
 
 build:
-  number: 3
+  number: 4
 
 requirements:
   build:
@@ -87,6 +87,7 @@ outputs:
         - test -f ${PREFIX}/lib/pkgconfig/liblz4.pc  # [unix]
         - pkg-config --cflags --libs liblz4          # [unix]
         - if not exist %LIBRARY_LIB%\\pkgconfig\\liblz4.pc exit 1  # [win]
+        - findstr /C:"-lliblz4" "%LIBRARY_LIB%\\pkgconfig\\liblz4.pc"  # [win]
         - if not exist %LIBRARY_LIB%\\cmake\\lz4\\lz4Targets.cmake exit 1  # [win]
         - findstr /C:"liblz4.lib" "%LIBRARY_LIB%\\cmake\\lz4\\lz4Targets-release.cmake"  # [win]
         - findstr /C:"liblz4.dll" "%LIBRARY_LIB%\\cmake\\lz4\\lz4Targets-release.cmake"  # [win]
