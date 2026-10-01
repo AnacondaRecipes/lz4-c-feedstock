@@ -13,7 +13,7 @@ source:
     - patches/windows-lz4-c-output-name.patch  # [win]
 
 build:
-  number: 5
+  number: 6
 
 requirements:
   build:
@@ -99,6 +99,13 @@ outputs:
   - name: lz4-c-static
     script: build_static.sh  # [unix]
     script: bld_static.bat  # [win]
+    build:
+      ignore_run_exports_from:
+        - {{ compiler('c') }}
+    requirements:
+      build:
+        # Make sure that the output has an associated compiler variant.
+        - {{ compiler('c') }}
     test:
       commands:
         - test -f ${PREFIX}/lib/liblz4.a      # [unix]
